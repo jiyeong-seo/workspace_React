@@ -7,6 +7,7 @@ import TableTest from "./components/pages/table";
 import Hooks from "./components/pages/hooks";
 import Antd from "./components/pages/antd";
 import Board from "./components/pages/board";
+import BoardDetail from "./components/pages/board/detail";
 
 import Header from "./components/templates/Header";
 import Footer from "./components/templates/Footer";
@@ -30,6 +31,8 @@ export default function App() {
                 <Route path="/hooks" element={<Hooks />} />
                 <Route path="/antd" element={<Antd />} />
                 <Route path="/board" element={<Board />} />
+                {/* 게시판 상세 페이지 */}
+                <Route path="/board/detail/:id" element={<BoardDetail />} />
               </Routes>
             </Col>
           </Row>
