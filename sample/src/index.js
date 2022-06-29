@@ -6,6 +6,10 @@ import reportWebVitals from "./reportWebVitals";
 
 import "antd/dist/antd.min.css";
 
+/** 에디터 - 공통으로 사용시 index.js에 사용  */
+import "froala-editor/css/froala_style.min.css";
+import "froala-editor/css/froala_editor.pkgd.min.css";
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<App />);
 

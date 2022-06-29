@@ -5,6 +5,8 @@ import { Row, Col, Button, Modal, Form, Input } from "antd";
 
 import { useNavigate } from "react-router-dom";
 
+import FroalaEditor from "react-froala-wysiwyg";
+
 import { defaultQuery } from "../../../../config/utils/network/index";
 
 // 게시판 상세 페이지
@@ -24,7 +26,10 @@ const BoardDetail = () => {
     bbsId: "BBSMSTR_000000000091",
     nttId: id,
   });
+  // FroalaEditor 에 값 대입
+  const [model, setModel] = useState();
 
+  // 상세정보
   const [detail, setDetail] = useState();
 
   /** 4. 게시판 상세정보 API 실행 */
@@ -60,7 +65,11 @@ const BoardDetail = () => {
   /** 5. detail state 값 변경이 있고 값이 존재한다면 form.item의 값 주입 */
   useEffect(() => {
     if (detail) {
-      form.setFieldsValue({ nttSj: detail.nttSj, nttCn: detail.nttCn });
+      form.setFieldsValue({
+        nttSj: detail.nttSj,
+        // nttCn: detail.nttCn
+      });
+      setModel(detail.nttCn);
     }
   }, [detail]);
 
@@ -83,7 +92,7 @@ const BoardDetail = () => {
             // dangerouslySetInnerHTML={{ __html: detail?.nttCn || "" }}
           >
             <Form.Item name="nttCn">
-              <TextArea />
+              <FroalaEditor tag="textarea" model={model} />
             </Form.Item>
           </Col>
         </Row>
@@ -99,6 +108,5 @@ const BoardDetail = () => {
 };
 
 const { confirm } = Modal;
-const { TextArea } = Input;
 
 export default BoardDetail;
