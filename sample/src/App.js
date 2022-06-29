@@ -8,6 +8,7 @@ import Hooks from "./components/pages/hooks";
 import Antd from "./components/pages/antd";
 import Board from "./components/pages/board";
 import BoardDetail from "./components/pages/board/detail";
+import BoardUpdate from "./components/pages/board/update";
 
 import Header from "./components/templates/Header";
 import Footer from "./components/templates/Footer";
@@ -33,6 +34,7 @@ export default function App() {
                 <Route path="/board" element={<Board />} />
                 {/* 게시판 상세 페이지 */}
                 <Route path="/board/detail/:id" element={<BoardDetail />} />
+                <Route path="/board/update/:id" element={<BoardUpdate />} />
               </Routes>
             </Col>
           </Row>

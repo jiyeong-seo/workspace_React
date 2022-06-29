@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useMatch } from "react-router-dom";
+import { useMatch, Link } from "react-router-dom";
 
 import { Row, Col, Button } from "antd";
 
@@ -55,8 +55,14 @@ const BoardDetail = () => {
       </Row>
       <Row>
         <Col span={24}>
-          <Button type="primary">수정</Button>
-          <Button>목록</Button>
+          <Link to={`/board/update/${id}`}>
+            {" "}
+            <Button type="primary">수정</Button>
+          </Link>
+          <Link to="/board">
+            {" "}
+            <Button>목록</Button>
+          </Link>
         </Col>
       </Row>
     </div>
