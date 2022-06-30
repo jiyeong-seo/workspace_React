@@ -10,40 +10,20 @@ import FroalaEditor from "react-froala-wysiwyg";
 import { defaultQuery } from "../../../../config/utils/network/index";
 
 // 게시판 상세 페이지
-const BoardDetail = () => {
+const BoardInsert = () => {
   // Form 에 직접 접근할 수 있게 연결
   const [form] = Form.useForm();
 
   let navigate = useNavigate();
-  /** 1. match : params 를 조회 (라우트를 통해 전달된 값들) */
-  // 인자로 url을 넘기면 해당 url과 일치할 경우 url의 정보를 반환하고,
-  // 일치하지 않을 경우 null을 반환
-  const {
-    params: { id },
-  } = useMatch("/board/update/:id");
 
   /** 2. state로 전달받은 값을 세팅  */
   const [params] = useState({
     siteId: "SITE_000000000000001",
     bbsId: "BBSMSTR_000000000091",
-    nttId: id,
   });
+
   // FroalaEditor 에 값 대입
   const [model, setModel] = useState();
-
-  // 상세정보
-  const [detail, setDetail] = useState();
-
-  /** 4. 게시판 상세정보 API 실행 */
-  // 게시판 상세 정보
-  const boardDetail = async () => {
-    const { data } = await defaultQuery("/api/article/find", params);
-
-    if (data) {
-      const { result } = data;
-      setDetail(result);
-    }
-  };
 
   // handlefinish 핸들러 호출시 실행
   const boardUpdate = async (payload) => {
@@ -54,7 +34,7 @@ const BoardDetail = () => {
         if (result === 1) {
           // 성공
           Modal.success({
-            content: "수정하였습니다.",
+            content: "등록하였습니다.",
             okText: "확인",
             // ok 버튼 누를 시 호출
             onOk: () => {
@@ -105,30 +85,12 @@ const BoardDetail = () => {
     boardUpdate(payload);
   };
 
-  /** 3. 마운트가 되었을 때 상세보기 API 호출 */
-  useEffect(() => {
-    boardDetail();
-  }, []);
-  // [] 페이지가 마운트 되었을 때 1회만 호출
-
-  /** 5. detail state 값 변경이 있고 값이 존재한다면 form.item의 값 주입 */
-  useEffect(() => {
-    if (detail) {
-      form.setFieldsValue({
-        nttSj: detail.nttSj,
-        // nttCn: detail.nttCn
-      });
-      setModel(detail.nttCn);
-    }
-  }, [detail]);
-
   return (
     <div>
       <Form form={form} onFinish={handleFinish}>
         <Row>
           <Col span={24}>
             <Row>
-              {/* <Col flex={1}>{detail?.nttSj || ""}</Col> */}
               <Col span={24}>
                 <Form.Item name="nttSj">
                   <Input />
@@ -164,4 +126,4 @@ const BoardDetail = () => {
 
 const { confirm } = Modal;
 
-export default BoardDetail;
+export default BoardInsert;

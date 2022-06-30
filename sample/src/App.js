@@ -9,6 +9,7 @@ import Antd from "./components/pages/antd";
 import Board from "./components/pages/board";
 import BoardDetail from "./components/pages/board/detail";
 import BoardUpdate from "./components/pages/board/update";
+import BoardInsert from "./components/pages/board/insert";
 
 import Header from "./components/templates/Header";
 import Footer from "./components/templates/Footer";
@@ -35,6 +36,7 @@ export default function App() {
                 {/* 게시판 상세 페이지 */}
                 <Route path="/board/detail/:id" element={<BoardDetail />} />
                 <Route path="/board/update/:id" element={<BoardUpdate />} />
+                <Route path="/board/insert" element={<BoardInsert />} />
               </Routes>
             </Col>
           </Row>
