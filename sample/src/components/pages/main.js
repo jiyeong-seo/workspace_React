@@ -1,31 +1,47 @@
 import React, { useState, useEffect } from "react";
-
-import Table from "../molecules/Table_bak";
+// styled components
+import styled from "styled-components";
 
 const Main = () => {
-  // const [data, setData] = useState(() => []);
-
-  // const columns = [
-  //   { colName: "no", key: "no", textAligh: "center", width: 50 },
-  //   { colName: "제목", key: "title", textAligh: "center" },
-  //   { colName: "등록자", key: "regNm", textAligh: "center", width: 100 },
-  //   { colName: "등록일", key: "regDt", textAligh: "center", width: 100 },
-  // ];
-
-  // useEffect(() => {
-  //   setData([
-  //     { key: 1, no: 1, title: "제목1", regNm: "홍길동", regDt: "2022-06-15" },
-  //     { key: 2, no: 2, title: "제목2", regNm: "홍길동", regDt: "2022-06-15" },
-  //     { key: 3, no: 3, title: "제목3", regNm: "홍길동", regDt: "2022-06-15" },
-  //     { key: 4, no: 4, title: "제목4", regNm: "홍길동", regDt: "2022-06-15" },
-  //   ]);
-  // }, []);
-
   return (
     <div style={{ padding: 20 }}>
-      {/* <Table columns={columns} height={500} data={data} /> */}
+      <CustomButton>클릭</CustomButton>
+      <Box boxColor="white" width={200} height={200}>
+        <div className="box-child">
+          <div className="inner-box"></div>
+        </div>
+      </Box>
+      <Box boxColor="blue" width={300} height={300}>
+        <div className="box-child">
+          <div className="inner-box"></div>
+        </div>
+      </Box>
     </div>
   );
 };
+
+// 특정 컴포넌트에서만 CSS를 적용하는 경우 사용한다.
+const CustomButton = styled.a`
+  border: 1px dashed #ccc;
+  padding: 0 20px;
+`;
+
+const Box = styled.div`
+  height: 500px;
+  border: "1px solid #000";
+  background: yellow;
+  .box-child {
+    border: "1px solid #000";
+    background: red;
+    height:  ${(props) => props.height}px;
+    width:  ${(props) => props.width}px;
+    .inner-box {
+      width: ${(props) => props.width}px;
+      height:  ${(props) => props.height}px;
+      border 1px solid #000;
+      background: ${(props) => props.boxColor};
+    }
+  }
+`;
 
 export default Main;
