@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Row, Col, Layout, Button } from "antd";
 import styled from "styled-components";
@@ -7,7 +7,15 @@ import { SearchOutlined } from "@ant-design/icons";
 import Logo from "./asset/temp/logo.svg";
 import menuList from "./asset/temp/menu.json";
 
+import Dropdown from "./components/atoms/Drpodown";
+
 export default function App() {
+  const [leftValue, setLeftValue] = useState("MarketPlace");
+
+  const handleFinish = (vlaue) => {
+    setLeftValue(vlaue);
+  };
+
   return (
     <BrowserRouter>
       <DribbleLayout>
@@ -90,6 +98,22 @@ export default function App() {
               </span>
             </Col>
           </Row>
+          <Row className="middle">
+            <Col span={24}>
+              <Row className="filter-content">
+                <Col flex="200px" style={{ paddingTop: 20 }}>
+                  <Dropdown
+                    options={tempList}
+                    onFinish={handleFinish}
+                    defaultValue={leftValue}
+                  />
+                </Col>
+                <Col flex="auto">가운데</Col>
+                <Col flex="200px">오른쪽</Col>
+              </Row>
+            </Col>
+            {/* <Col span={24}>카드영역</Col> */}
+          </Row>
         </DribbbleContent>
         <Footer>푸터</Footer>
       </DribbleLayout>
@@ -98,6 +122,21 @@ export default function App() {
 }
 
 const { Header, Footer, Content } = Layout;
+
+const tempList = [
+  {
+    label: "Popular",
+    value: "Popular",
+  },
+  {
+    label: "New & Noteworthy",
+    value: "NewAndNoteworthy",
+  },
+  {
+    label: "MarketPlace",
+    value: "MarketPlace",
+  },
+];
 
 const DribbleLayout = styled(Layout)`
   font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial,
@@ -199,6 +238,21 @@ const DribbbleContent = styled(Content)`
           text-decoration: underline;
         }
       }
+    }
+  }
+
+  .middle {
+    background: #fff;
+
+    @media (min-width: 768px) {
+      padding: 0 32px;
+    }
+    @media (max-width: 1024px) {
+      padding: 0 72px;
+    }
+
+    .filter-content {
+      min-height: 72px;
     }
   }
 
