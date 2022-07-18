@@ -1,19 +1,17 @@
 import React, { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Row, Col, Layout, Button } from "antd";
+import { Row, Col, Layout, Typography } from "antd";
 import styled from "styled-components";
 import { SearchOutlined } from "@ant-design/icons";
-
-import Logo from "./asset/temp/logo.svg";
-import menuList from "./asset/temp/menu.json";
-
+import Logo from "./assets/temp/logo.svg";
+import menuList from "./assets/temp/menu.json";
 import Dropdown from "./components/atoms/Drpodown";
 
 export default function App() {
-  const [leftValue, setLeftValue] = useState("MarketPlace");
+  const [leftValue, setLeftValue] = useState("marketplace");
 
-  const handleFinish = (vlaue) => {
-    setLeftValue(vlaue);
+  const handleFinish = (value) => {
+    setLeftValue(value);
   };
 
   return (
@@ -24,39 +22,41 @@ export default function App() {
             <Col>
               <Row>
                 <Col>
-                  <a href="#">
-                    <img width={92} height={30} src={Logo} />
+                  <a href="/#">
+                    <img width={76} src={Logo} alt="logo" />
                   </a>
                 </Col>
                 <Col>
                   <ul className="menuList">
-                    {menuList.map((menu) => (
-                      <Menu>
-                        <a href="#" className="menu">
-                          {menu.menuNm}
-                        </a>
-                      </Menu>
-                    ))}
+                    {menuList.map((menu) => {
+                      return (
+                        <Menu>
+                          <a href="/#" className="menu">
+                            {menu.menuNm}
+                          </a>
+                        </Menu>
+                      );
+                    })}
                   </ul>
                 </Col>
               </Row>
             </Col>
-            <Col style={{ marginLeft: "auto" }}>
+            <Col style={{ marginLeft: `auto` }}>
               <ul>
                 <Action right={10}>
-                  <a href="#">
+                  <a href="/#">
                     <SearchOutlined
                       style={{ fontSize: 18, color: "#6e6d7a" }}
                     />
                   </a>
                 </Action>
                 <Action left={10} right={10}>
-                  <a href="#" className="singIn">
-                    sing in
+                  <a className="signIn" href="/#">
+                    Sign in
                   </a>
                 </Action>
                 <Action left={10}>
-                  <a href="#" className="btnAction">
+                  <a className="btnAction" href="/#">
                     Share my work
                   </a>
                 </Action>
@@ -101,19 +101,35 @@ export default function App() {
           <Row className="middle">
             <Col span={24}>
               <Row className="filter-content">
-                <Col flex="200px" style={{ paddingTop: 20 }}>
+                <Col flex="200px" style={{ paddingTop: 20, height: 300 }}>
                   <Dropdown
                     options={tempList}
                     onFinish={handleFinish}
                     defaultValue={leftValue}
                   />
                 </Col>
-                <Col flex="auto">가운데</Col>
+                <Col flex="auto" style={{ paddingTop: 20 }}>
+                  {/* <Dropdown options={tempList1} onFinish={handleFinish} /> */}
+                </Col>
                 <Col flex="200px">오른쪽</Col>
               </Row>
             </Col>
             {/* <Col span={24}>카드영역</Col> */}
           </Row>
+          {/* <Row className="middle">
+            <Col span={24} className="filter-content">
+              <Row className="filter-row">
+                <Col flex="120px">
+                  <Dropdown options={tempList} />
+                </Col>
+                <Col flex="auto">
+                  <Dropdown options={tempList1} />
+                </Col>
+                <Col flex="120px">오른쪽</Col>
+              </Row>
+            </Col>
+            <Col span={24}>카드영역</Col>
+          </Row> */}
         </DribbbleContent>
         <Footer>푸터</Footer>
       </DribbleLayout>
@@ -121,22 +137,40 @@ export default function App() {
   );
 }
 
-const { Header, Footer, Content } = Layout;
-
 const tempList = [
   {
     label: "Popular",
-    value: "Popular",
+    value: "popular",
+    group: "A",
   },
   {
     label: "New & Noteworthy",
     value: "NewAndNoteworthy",
+    group: "A",
   },
   {
-    label: "MarketPlace",
-    value: "MarketPlace",
+    label: "Marketplace",
+    value: "marketplace",
+    group: "B",
   },
 ];
+
+const tempList1 = [
+  {
+    label: "aa",
+    value: "aa",
+  },
+  {
+    label: "bb",
+    value: "bb",
+  },
+  {
+    label: "cc",
+    value: "cc",
+  },
+];
+
+const { Header, Footer, Content } = Layout;
 
 const DribbleLayout = styled(Layout)`
   font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial,
@@ -148,16 +182,16 @@ const DribbbleHeader = styled(Header)`
   background: #fff;
   height: 80px;
   box-shadow: inset 0px -1px 0px #f3f3f4;
-  line-heigth: 80px;
+  line-height: 80px;
   padding: 0 15px;
 
   .menuList {
     padding-left: 0;
   }
 
-  .singIn {
-    color: #6e6d7a;
+  .signIn {
     font-size: 16px;
+    color: #6e6d7a;
   }
 
   .btnAction {
@@ -182,13 +216,15 @@ const Menu = styled.li`
 const Action = styled.li`
   display: inline;
   margin-left: ${(props) => props.left || 0}px;
-  margin-right: ${(props) => props.rigth || 0}px;
+  margin-right: ${(props) => props.right || 0}px;
 `;
 
 const DribbbleContent = styled(Content)`
   background: #f9f8fd;
+  // margin: 0 auto;
   .top {
     min-width: 768px;
+    // max-width: 1300px;
     padding-right: 80px;
     padding-left: 80px;
     height: 480px;
@@ -243,16 +279,25 @@ const DribbbleContent = styled(Content)`
 
   .middle {
     background: #fff;
-
     @media (min-width: 768px) {
       padding: 0 32px;
     }
-    @media (max-width: 1024px) {
+    @media (min-width: 1200px) {
       padding: 0 72px;
     }
 
     .filter-content {
       min-height: 72px;
+    }
+  }
+
+  .middle {
+    background: #fff;
+    .filter-content {
+      min-height: 72px;
+      .filter-row {
+        height: 100%;
+      }
     }
   }
 
