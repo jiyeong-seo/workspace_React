@@ -1,17 +1,33 @@
 import React, { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Row, Col, Layout, Typography } from "antd";
+import { Row, Col, Layout, Typography, Button, Form } from "antd";
 import styled from "styled-components";
-import { SearchOutlined } from "@ant-design/icons";
+import { SearchOutlined, FilterOutlined } from "@ant-design/icons";
 import Logo from "./assets/temp/logo.svg";
 import menuList from "./assets/temp/menu.json";
 import Dropdown from "./components/atoms/Drpodown";
+import Carousel from "./components/atoms/Carousel";
+
+import categories from "./assets/temp/categories.json";
 
 export default function App() {
+  const [form] = Form.useForm();
+
   const [leftValue, setLeftValue] = useState("marketplace");
+  // 부모가 자식 값을 전달받기 위한 state
+  const [centerValue, setCenterValue] = useState(); // 부모가 자식 값을 전달받음 => 이유는? 데이터 조회..?
+  const [isFilter, setIsFilter] = useState(false);
 
   const handleFinish = (value) => {
     setLeftValue(value);
+  };
+
+  const handleCarouselFinish = (value) => {
+    setCenterValue(value);
+  };
+
+  const handleFilterClick = () => {
+    setIsFilter(!isFilter);
   };
 
   return (
@@ -101,7 +117,7 @@ export default function App() {
           <Row className="middle">
             <Col span={24}>
               <Row className="filter-content">
-                <Col flex="200px" style={{ paddingTop: 20, height: 300 }}>
+                <Col flex="200px" style={{ paddingTop: 20 }}>
                   <Dropdown
                     options={tempList}
                     onFinish={handleFinish}
@@ -109,10 +125,47 @@ export default function App() {
                   />
                 </Col>
                 <Col flex="auto" style={{ paddingTop: 20 }}>
-                  {/* <Dropdown options={tempList1} onFinish={handleFinish} /> */}
+                  <CarouselWrap>
+                    <Carousel
+                      data={categories}
+                      keyOption={{
+                        label: "categoryName",
+                        value: "categoryCode",
+                      }}
+                      onFinish={handleCarouselFinish}
+                      defaultValue={centerValue}
+                    />
+                  </CarouselWrap>
                 </Col>
-                <Col flex="200px">오른쪽</Col>
+                <Col
+                  flex="200px"
+                  style={{ paddingTop: 10, textAlign: "right" }}
+                >
+                  <Button
+                    icon={<FilterOutlined />}
+                    size={"large"}
+                    style={{ borderRadius: "8px" }}
+                    onClick={handleFilterClick}
+                  >
+                    Filters
+                  </Button>
+                </Col>
               </Row>
+              <Form form={form} layout="vertical">
+                <Row
+                  className={`filter-keywords ${isFilter ? "active" : ""}`}
+                  gutter={[16, 16]}
+                >
+                  <Col span={6}>
+                    <Form.Item name="tags" label="Tags">
+                      {/* <Search size="large" /> */}
+                    </Form.Item>
+                  </Col>
+                  <Col span={6}>2</Col>
+                  <Col span={6}>3</Col>
+                  <Col span={6}>4</Col>
+                </Row>
+              </Form>
             </Col>
             {/* <Col span={24}>카드영역</Col> */}
           </Row>
@@ -289,6 +342,10 @@ const DribbbleContent = styled(Content)`
     .filter-content {
       min-height: 72px;
     }
+
+    .active {
+      display: none;
+    }
   }
 
   .middle {
@@ -308,4 +365,10 @@ const DribbbleContent = styled(Content)`
     color: #fff;
     font-weight: 500;
   }
+`;
+
+const CarouselWrap = styled.div`
+  max-width: 1000px;
+  margin: 0 auto;
+  padding-top: 10px;
 `;
