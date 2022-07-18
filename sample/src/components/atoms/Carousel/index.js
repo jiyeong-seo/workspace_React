@@ -17,7 +17,7 @@ export default function Carousel({
     speed: 500, // 속도 여부
     slidesToShow: 10, // 한번에 보여질 슬라이드 수
     slidesToScroll: 1, // 스크롤 시 움직여질 슬라이드 수
-    variableWidth: true,
+    variableWidth: true, // 정렬..?
   };
 
   // 캐러셀 슬라이드 클릭시 실행될 핸들러
