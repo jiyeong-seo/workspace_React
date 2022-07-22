@@ -1,24 +1,37 @@
-import React, { useEffect, useState } from "react";
-import { Row, Col, Table, Pagination, Button } from "antd";
+import React, { useState, useEffect } from "react";
+import { Row, Col, Table, Pagination } from "antd";
 import { useNavigate } from "react-router-dom";
 
 import Search from "../../molecules/Search";
 import { defaultQuery } from "../../../config/utils/network";
+import { Button } from "antd";
 
+/**
+ * 게시판 목록
+ * @returns
+ */
 const Board = () => {
   let navigate = useNavigate();
-  // 파라미터
+
+  /** 파라미터 */
   const [params, setParams] = useState({
     pageIndex: 1,
     pageSize: 10,
-    bbsId: "BBSMSTR_000000000091", // 게시판 고유번호(공지사항)
-    siteId: "SITE_000000000000001", // 사이트 고유번호
+    bbsId: "BBSMSTR_000000000091",
+    siteId: "SITE_000000000000001",
   });
-  // 결과 값
+
+  /**
+   * 결과값
+   */
   const [dataSource, setDataSource] = useState(() => []);
-  // 페이지 정보
+  /** 페이지 정보 */
   const [paging, setPaging] = useState();
 
+  /**
+   * 검색
+   * @param {*} values
+   */
   const handleSearch = async (values) => {
     const { searchCondition, searchKeyword } = values;
 
@@ -28,14 +41,13 @@ const Board = () => {
       searchWrd: searchKeyword,
     };
 
-    // API 호출
     boardList(payload);
   };
 
+  /**
+   * 게시물 목록 api
+   */
   const boardList = async (values) => {
-    // bbsId: "게시판 아이디"
-    // siteId: "사이트 아이디"
-    // pageSize : 10
     const payload = {
       ...values,
     };
@@ -46,15 +58,15 @@ const Board = () => {
       const { paginationInfo, resultList } = data;
       setDataSource(resultList);
       setPaging(paginationInfo);
+      // setLoaded(false);
     }
 
-    setParams(payload);
+    setParams(values);
   };
-  // 마운트 시 한 번 호출
-  // 콜백 : 실행시 API 통신해서 데이터 가져오는 콜백함수
+
   useEffect(() => {
     boardList(params);
-  }, []);
+  }, []); // 마운트가 되었을 때 한번만 실행
 
   return (
     <div>
@@ -63,8 +75,8 @@ const Board = () => {
           <Search
             options={[
               { label: "전체", value: "" },
-              { label: "제목", value: "1" },
-              { label: "본문", value: "2" },
+              { label: "제목", value: "0" },
+              { label: "본문", value: "1" },
             ]}
             onSearch={handleSearch}
           />
@@ -74,7 +86,8 @@ const Board = () => {
             columns={columns}
             dataSource={dataSource}
             pagination={false}
-            onRow={(record, index) => {
+            rowKey="nttId"
+            onRow={(record, rowIndex) => {
               return {
                 onClick: (event) => {
                   navigate(`/board/detail/${record.nttId}`);
@@ -88,7 +101,6 @@ const Board = () => {
             defaultCurrent={1}
             current={paging?.currentPageNo}
             total={paging?.totalRecordCount}
-            // onChange는 pageIndex 인자로 전달
             onChange={(pageIndex) => {
               const payload = {
                 ...params,
@@ -102,7 +114,7 @@ const Board = () => {
         <Col span={24} style={{ textAlign: "right" }}>
           <Button
             onClick={() => {
-              navigate("/board/insert");
+              navigate(`/board/insert`);
             }}
           >
             글쓰기
@@ -124,6 +136,12 @@ const columns = [
     title: "제목",
     dataIndex: "nttSj",
     key: "nttSj",
+  },
+  {
+    title: "작성자",
+    dataIndex: "frstRegisterId",
+    key: "frstRegisterId",
+    width: 150,
   },
   {
     title: "작성일",

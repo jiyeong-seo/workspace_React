@@ -19,6 +19,5 @@ const slice = createSlice({
 /** actions */
 export const { setMenuList } = slice.actions;
 
-// export const selectCommon = (state) => state.common;
 /** reducer */
 export default slice.reducer;

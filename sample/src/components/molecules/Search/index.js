@@ -3,21 +3,25 @@ import { Row, Col, Select, Input, Form } from "antd";
 
 /**
  * 공통 검색
- * const options = [{label : "전체", value: ""}, {label : "제목", value: "1"}]
- * @param {} param0
+ * options = [{label : "전체", value : ""}, {label : "제목", value : "1"}]
+ * options = [{label : "전체", value : ""}, {label : "제목", value : "1"}, {label : "작성자", value : "2"}]
+ * @param {*} param0
  * @returns
  */
-
-export default function Search({ options = [], onSearch }) {
-  // form을 제어할 수 있는 객체 - ant desing 문법
+export default function Search({ options = [], onSearch = () => {} }) {
   const [form] = Form.useForm();
 
-  // 검색 버튼 클릭 이벤트 핸들러
-  const handelSearch = () => {
+  /**
+   * submit
+   */
+  const handleSearch = () => {
     form.submit();
   };
 
-  // form.submit 호출시 실행되는 이벤트 핸들러
+  /**
+   * 검색
+   * @param {*} values
+   */
   const handleFinish = (values) => {
     onSearch && onSearch(values);
   };
@@ -26,26 +30,24 @@ export default function Search({ options = [], onSearch }) {
     <Row>
       <Col span={24} style={{ textAlign: "right" }}>
         <Form layout="inline" form={form} onFinish={handleFinish}>
-          {/* name 속성 => form.item들 구분  */}
           <Form.Item name="searchCondition">
             <Select style={{ width: 150 }}>
-              {options.map((option) => {
+              {options.map((option, i) => {
                 return (
-                  <Option value={option?.value}>{option?.label || ""}</Option>
+                  <Option key={i} value={option?.value}>
+                    {option?.label || ""}
+                  </Option>
                 );
               })}
-              {/* <Option value="">전체</Option>
-              <Option value="1">제목</Option> */}
             </Select>
           </Form.Item>
           <Form.Item name="searchKeyword">
             <Input.Search
-              style={{ width: 200 }}
-              placeholder="검색어를 입력
-        "
-              onSearch={handelSearch}
+              style={{ width: 300 }}
+              placeholder="검색어를 입력하세요."
+              onSearch={handleSearch}
               enterButton
-            ></Input.Search>
+            />
           </Form.Item>
         </Form>
       </Col>
@@ -54,7 +56,3 @@ export default function Search({ options = [], onSearch }) {
 }
 
 const { Option } = Select;
-
-// 아래와 같이 사용 가능하다
-// search 를 testsearch 로 변경
-// const { Search: TestSearch } = Input;

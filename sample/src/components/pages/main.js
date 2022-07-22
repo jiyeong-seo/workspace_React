@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-// styled components
+import React from "react";
 import styled from "styled-components";
 
 const Main = () => {
@@ -20,7 +19,6 @@ const Main = () => {
   );
 };
 
-// 특정 컴포넌트에서만 CSS를 적용하는 경우 사용한다.
 const CustomButton = styled.a`
   border: 1px dashed #ccc;
   padding: 0 20px;
@@ -28,20 +26,19 @@ const CustomButton = styled.a`
 
 const Box = styled.div`
   height: 500px;
-  border: "1px solid #000";
+  border: 1px solid #000;
   background: yellow;
   .box-child {
-    border: "1px solid #000";
+    width: 400px;
+    height: 400px;
+    border: 1px solid #000;
     background: red;
-    height:  ${(props) => props.height}px;
-    width:  ${(props) => props.width}px;
     .inner-box {
       width: ${(props) => props.width}px;
-      height:  ${(props) => props.height}px;
-      border 1px solid #000;
+      height: ${(props) => props.height}px;
+      border: 1px solid #000;
       background: ${(props) => props.boxColor};
     }
   }
 `;
-
 export default Main;

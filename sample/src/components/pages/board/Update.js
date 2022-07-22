@@ -1,51 +1,53 @@
 import React, { useEffect, useState } from "react";
 import { useMatch, Link } from "react-router-dom";
-
 import { Row, Col, Button, Modal, Form, Input } from "antd";
-
 import { useNavigate } from "react-router-dom";
-
 import FroalaEditor from "react-froala-wysiwyg";
 
-import { defaultQuery } from "../../../../config/utils/network/index";
+import { defaultQuery } from "../../../config/utils/network";
 
-// 게시판 상세 페이지
-const BoardDetail = () => {
-  // Form 에 직접 접근할 수 있게 연결
+/**
+ * 게시판 상세
+ * @returns
+ */
+const BoardUpdate = () => {
   const [form] = Form.useForm();
 
   let navigate = useNavigate();
-  /** 1. match : params 를 조회 (라우트를 통해 전달된 값들) */
-  // 인자로 url을 넘기면 해당 url과 일치할 경우 url의 정보를 반환하고,
-  // 일치하지 않을 경우 null을 반환
+  /**
+   * 1. match : params 를 조회 (라우트를 통해 전달된 값들)
+   */
   const {
     params: { id },
   } = useMatch("/board/update/:id");
 
-  /** 2. state로 전달받은 값을 세팅  */
+  /**
+   * 2.state 전달받은 값을 세팅
+   */
   const [params] = useState({
-    siteId: "SITE_000000000000001",
-    bbsId: "BBSMSTR_000000000091",
+    siteId: "SITE_000000000000001", // 사이트 고유번호
+    bbsId: "BBSMSTR_000000000091", // 게시판 고유번호
     nttId: id,
   });
-  // FroalaEditor 에 값 대입
+
   const [model, setModel] = useState();
 
-  // 상세정보
+  /** 상세정보 */
   const [detail, setDetail] = useState();
 
-  /** 4. 게시판 상세정보 API 실행 */
-  // 게시판 상세 정보
+  /** 4. 게시판 상세정보 api 실행 */
   const boardDetail = async () => {
     const { data } = await defaultQuery("/api/article/find", params);
-
     if (data) {
       const { result } = data;
       setDetail(result);
     }
   };
 
-  // handlefinish 핸들러 호출시 실행
+  /**
+   * 게시판 수정 api 실행
+   * @param {*} payload
+   */
   const boardUpdate = async (payload) => {
     try {
       const { data } = await defaultQuery("/api/article/save", payload);
@@ -56,9 +58,8 @@ const BoardDetail = () => {
           Modal.success({
             content: "수정하였습니다.",
             okText: "확인",
-            // ok 버튼 누를 시 호출
             onOk: () => {
-              navigate("/board");
+              navigate(`/board`);
             },
           });
         }
@@ -68,14 +69,14 @@ const BoardDetail = () => {
     }
   };
 
-  const handleCancle = () => {
+  const handleCancel = () => {
     confirm({
       title: "",
       content: "페이지를 벗어나시겠습니까?",
       okText: "확인",
       cancelText: "취소",
       onOk() {
-        navigate("/board");
+        navigate(`/board`);
       },
       onCancel() {
         console.log("Cancel");
@@ -83,44 +84,55 @@ const BoardDetail = () => {
     });
   };
 
-  // modle 값 변경시 modle state 변경하는 이벤트 핸들러
+  /**
+   * 에디터 변경 이벤트
+   * @param {*} value
+   */
   const handleModelChange = (value) => {
     setModel(value);
   };
 
-  // 저장 버튼 클릭시 저장 이벤트 핸들러
+  /**
+   * 저장
+   */
   const handleSubmit = () => {
     form.submit();
   };
 
+  /**
+   * form submit
+   * @param {*} values
+   */
   const handleFinish = (values) => {
-    const { nttSj, nttCn } = values;
+    const { nttSj } = values;
 
-    const payload = {
+    boardUpdate({
       ...params,
       nttSj,
       nttCn: model,
-    };
-
-    boardUpdate(payload);
+    });
   };
 
-  /** 3. 마운트가 되었을 때 상세보기 API 호출 */
+  /**
+   * 3.마운트가 되었을 때 api handler 호출
+   */
   useEffect(() => {
     boardDetail();
-  }, []);
-  // [] 페이지가 마운트 되었을 때 1회만 호출
+  }, []); // 페이지가 마운트 되었을 때 1회만 실행
 
-  /** 5. detail state 값 변경이 있고 값이 존재한다면 form.item의 값 주입 */
+  /**
+   * 5.detail 값의 변경이 있고  값이 존재한다면 실행
+   * form item 값을 주입
+   */
   useEffect(() => {
     if (detail) {
       form.setFieldsValue({
         nttSj: detail.nttSj,
-        // nttCn: detail.nttCn
+        // nttCn: detail.nttCn,
       });
       setModel(detail.nttCn);
     }
-  }, [detail]);
+  }, [detail]); // detail state가 변경이 있으면 실행
 
   return (
     <div>
@@ -154,7 +166,7 @@ const BoardDetail = () => {
             <Button type="primary" onClick={handleSubmit}>
               저장
             </Button>
-            <Button onClick={handleCancle}>취소</Button>
+            <Button onClick={handleCancel}>취소</Button>
           </Col>
         </Row>
       </Form>
@@ -164,4 +176,4 @@ const BoardDetail = () => {
 
 const { confirm } = Modal;
 
-export default BoardDetail;
+export default BoardUpdate;

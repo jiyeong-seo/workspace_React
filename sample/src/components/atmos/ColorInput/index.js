@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
+import styled from "styled-components";
 import { Input } from "antd";
 import { CompactPicker } from "react-color";
-import styled from "styled-components";
 import { BgColorsOutlined } from "@ant-design/icons";
 
 export default function ColorPicker({ onFinish, ...rest }) {
@@ -9,17 +9,27 @@ export default function ColorPicker({ onFinish, ...rest }) {
   const [color, setColor] = useState();
 
   const handleFocus = () => {
-    setVisible(!visible);
+    setVisible(true);
+  };
+
+  const handleFocusOut = () => {
+    setVisible(false);
   };
 
   const handleChangeComplete = (color) => {
     setColor(color.hex);
-    handleFocus();
+    handleFocusOut();
     onFinish && onFinish(color.hex);
   };
 
+  const handleBlur = () => {
+    setTimeout(() => {
+      handleFocusOut();
+    }, 150);
+  };
+
   return (
-    <PickerWrap display={visible ? "" : "none"}>
+    <PickerWrap display={visible ? "" : "none"} onBlur={handleBlur}>
       <DribbbleInput
         prefix={<BgColorsOutlined style={{ color }} />}
         {...rest}

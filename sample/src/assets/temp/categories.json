@@ -1,28 +1,23 @@
 [
   {
     "categoryName": "Animation",
-    "categoryCode": "animation",
-    "categorySeq": "1"
+    "categoryCode": "animation"
   },
   {
     "categoryName": "Branding",
-    "categoryCode": "branding",
-    "categorySeq": "2"
+    "categoryCode": "branding"
   },
   {
     "categoryName": "Illustration",
-    "categoryCode": "illustration",
-    "categorySeq": "3"
+    "categoryCode": "illustration"
   },
   {
     "categoryName": "Mobile",
-    "categoryCode": "mobile",
-    "categorySeq": "4"
+    "categoryCode": "mobile"
   },
   {
     "categoryName": "Print",
-    "categoryCode": "print",
-    "categorySeq": "5"
+    "categoryCode": "print"
   },
   {
     "categoryName": "Product Design",
@@ -36,6 +31,4 @@
     "categoryName": "Web Design",
     "categoryCode": "webDesign"
   }
-
-
 ]
