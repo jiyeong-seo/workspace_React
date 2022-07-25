@@ -1,77 +1,38 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Row, Col, Button } from "antd";
-import { FolderAddFilled, HeartFilled } from "@ant-design/icons";
 
-export default function Card({
-  key,
-  alt,
-  thumbnail,
-  badgeText,
-  title,
-  onLink,
-  onSave,
-  onLike,
-}) {
+export default function Card({ data, onLink }) {
   const [opacity, setOpacity] = useState(0);
-
   return (
-    <CardWrap opacity={opacity}>
+    <CardWrap color={data?.color} opacity={opacity}>
       <figure className="card-figure">
-        <img className="card-img" src={thumbnail} alt={alt} />
+        <img className="card-img" src={data?.thumnail} alt={data?.name} />
       </figure>
-      {badgeText && (
-        <div className="thumbnail-extras">
+      <div className="thumbnail-extras">
+        {data.badgeText && (
           <div className="badge-container">
-            <span className="badge-text">{badgeText}</span>
+            <span className="badge-text">{data.badgeText}</span>
           </div>
-        </div>
-      )}
+        )}
+      </div>
       <a
         className="thumbnail-link"
-        href="#0"
+        href="http://www.naver.com"
+        target="_blank"
         rel="noreferrer"
         onMouseOver={() => {
-          console.log("????");
           setOpacity(1);
         }}
         onMouseLeave={() => {
           setOpacity(0);
         }}
-        onClick={() => {
-          onLink && onLink(key);
-        }}
+        onClick={onLink}
       >
-        <span className="accessibility-text">{alt && alt}</span>
+        <span className="accessibility-text">{data?.name}</span>
       </a>
+      {/** 여기부터는 제공 */}
       <div className="thumbnail-overlay">
-        <div className="thumbnail-overlay-content">
-          <Row className="thumbnail-overlay-content-layout">
-            <Col flex="auto">{title && title}</Col>
-            <Col flex="110px">
-              <ul>
-                <li>
-                  <Button
-                    onClick={() => {
-                      onSave && onSave(key);
-                    }}
-                  >
-                    <FolderAddFilled />
-                  </Button>
-                </li>
-                <li>
-                  <Button
-                    onClick={() => {
-                      onLike && onLike(key);
-                    }}
-                  >
-                    <HeartFilled />
-                  </Button>
-                </li>
-              </ul>
-            </Col>
-          </Row>
-        </div>
+        <div className="thumbnail-overlay-content">asdasd</div>
       </div>
     </CardWrap>
   );
@@ -85,7 +46,7 @@ const CardWrap = styled.div`
   border-radius: 8px;
 
   .card-figure {
-    background: #ccc;
+    // background: ${(props) => props.color};
 
     .card-img {
       width: 100%;
@@ -148,7 +109,6 @@ const CardWrap = styled.div`
   }
 
   .thumbnail-link {
-    cursor: pointer;
     position: absolute;
     top: 0;
     right: 0;
@@ -169,7 +129,7 @@ const CardWrap = styled.div`
     align-items: flex-end;
     padding: 20px;
     border-radius: 8px;
-    opacity: ${(props) => props.opacity};
+    opacity: 0
 
     background: -webkit-gradient(
       linear,
@@ -211,6 +171,7 @@ const CardWrap = styled.div`
       rgba(0, 0, 0, 0.396541) 89.22%,
       rgba(0, 0, 0, 0.4) 91.17%
     );
+    pointer-events: none;
     content: "";
     position: absolute;
     top: 0;
@@ -225,21 +186,6 @@ const CardWrap = styled.div`
       align-items: center;
       justify-content: space-between;
       min-width: 0;
-      color: #fff;
-
-      .thumbnail-overlay-content-layout {
-        width: 100%;
-
-        ul {
-          li {
-            display: inline-block;
-            padding: 0 2px;
-            .ant-btn {
-              padding: 4px 7px;
-            }
-          }
-        }
-      }
     }
   }
 `;

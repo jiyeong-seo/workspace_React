@@ -1,59 +1,70 @@
 import React, { useState } from "react";
-import styled from "styled-components";
 import { Row, Col, Button } from "antd";
+import styled from "styled-components";
 import { FolderAddFilled, HeartFilled } from "@ant-design/icons";
 
-export default function Card({
-  key,
-  alt,
-  thumbnail,
-  badgeText,
-  title,
-  onLink,
-  onSave,
-  onLike,
-}) {
+export default function Card({ data, onLink, onSave, onLike }) {
   const [opacity, setOpacity] = useState(0);
+
+  //   {
+  //     "thumnail": "https://cdn.dribbble.com/userupload/3073229/file/original-9d845546c05287c76dcab2ea804c9f89.jpg?compress=1&resize=752x",
+  //     "name": "Razvan Vezeteu",
+  //     "type": "PRO",
+  //     "like": "36",
+  //     "view": "6.2k",
+  //     "color": "#eee",
+  //     "badgeText": "Vezeteu",
+  //     "profile": "https://cdn.dribbble.com/users/1008875/avatars/mini/304e6f8117bcf28aae30da3bb06a24dd.png?1616172130"
+  //   },
+
+  const handleSave = (e) => {
+    e.stopPropagation();
+    // '
+    // stopPropagation()
+    alert("test");
+  };
 
   return (
     <CardWrap opacity={opacity}>
       <figure className="card-figure">
-        <img className="card-img" src={thumbnail} alt={alt} />
+        <img className="card-img" src={data?.thumnail} alt={data?.name} />
       </figure>
-      {badgeText && (
+      {data?.badgeText && (
         <div className="thumbnail-extras">
           <div className="badge-container">
-            <span className="badge-text">{badgeText}</span>
+            <span className="badge-text">{data?.badgeText}</span>
           </div>
         </div>
       )}
       <a
         className="thumbnail-link"
+        // href="http://www.naver.com"
         href="#0"
+        // target="_blank"
         rel="noreferrer"
         onMouseOver={() => {
-          console.log("????");
           setOpacity(1);
         }}
         onMouseLeave={() => {
           setOpacity(0);
         }}
-        onClick={() => {
-          onLink && onLink(key);
+        onLink={() => {
+          onLink && onLink(data?.key);
         }}
       >
-        <span className="accessibility-text">{alt && alt}</span>
+        <span className="accessibility-text">{data?.name}</span>
       </a>
       <div className="thumbnail-overlay">
         <div className="thumbnail-overlay-content">
-          <Row className="thumbnail-overlay-content-layout">
-            <Col flex="auto">{title && title}</Col>
-            <Col flex="110px">
+          {/* {data?.title} */}
+          <Row className="thumbnail-overlay-content-right">
+            <Col flex="auto">{data?.title}</Col>
+            <Col flex="92px">
               <ul>
                 <li>
                   <Button
                     onClick={() => {
-                      onSave && onSave(key);
+                      onSave && onSave(data?.key);
                     }}
                   >
                     <FolderAddFilled />
@@ -62,7 +73,7 @@ export default function Card({
                 <li>
                   <Button
                     onClick={() => {
-                      onLike && onLike(key);
+                      onLike && onLike(data?.key);
                     }}
                   >
                     <HeartFilled />
@@ -85,7 +96,7 @@ const CardWrap = styled.div`
   border-radius: 8px;
 
   .card-figure {
-    background: #ccc;
+    // background: ${(props) => props.color};
 
     .card-img {
       width: 100%;
@@ -148,7 +159,6 @@ const CardWrap = styled.div`
   }
 
   .thumbnail-link {
-    cursor: pointer;
     position: absolute;
     top: 0;
     right: 0;
@@ -211,6 +221,7 @@ const CardWrap = styled.div`
       rgba(0, 0, 0, 0.396541) 89.22%,
       rgba(0, 0, 0, 0.4) 91.17%
     );
+    pointer-events: none;
     content: "";
     position: absolute;
     top: 0;
@@ -227,16 +238,12 @@ const CardWrap = styled.div`
       min-width: 0;
       color: #fff;
 
-      .thumbnail-overlay-content-layout {
+      .thumbnail-overlay-content-right {
         width: 100%;
 
         ul {
           li {
             display: inline-block;
-            padding: 0 2px;
-            .ant-btn {
-              padding: 4px 7px;
-            }
           }
         }
       }
