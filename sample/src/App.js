@@ -241,7 +241,7 @@ export default function App() {
             <Col span={24} className="site-map">
               <Row>
                 <Col flex={`256px`}>왼쪽</Col>
-                {/* <Col flex={`auto`}>
+                <Col flex={`auto`}>
                   <Row>
                     {siteMapList.map((site) => {
                       return (
@@ -260,7 +260,7 @@ export default function App() {
                       );
                     })}
                   </Row>
-                </Col> */}
+                </Col>
                 <Col flex={`256px`}>오른쪽</Col>
               </Row>
             </Col>
